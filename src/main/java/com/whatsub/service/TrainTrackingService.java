@@ -6,9 +6,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.javapoet.ClassName;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +34,6 @@ public class TrainTrackingService {
 
 	public void startTracking(AlertRequest request) {
 		try {
-			// 출발 시간 기준으로 해당 역에서 탈 수 있는 열차 찾기
 			String trainNum = identifyUserTrain(request);
 
 			if (trainNum != null) {

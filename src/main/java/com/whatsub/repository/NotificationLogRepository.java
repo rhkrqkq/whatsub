@@ -3,23 +3,21 @@ package com.whatsub.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.whatsub.domain.entity.NotificationLog;
 import com.whatsub.domain.enums.NotificationStatus;
 
-public interface NotificationLogRepository extends MongoRepository<NotificationLog, String> {
-	List<NotificationLog> findByAlertRequestId(ObjectId alertRequestId);
+public interface NotificationLogRepository extends JpaRepository<NotificationLog, Long> {
+	List<NotificationLog> findByAlertRequestIdAndStatus(Long alertRequestId, NotificationStatus status);
 
-	List<NotificationLog> findByAlertRequestIdAndStatus(ObjectId alertRequestId);
+	List<NotificationLog> findByAlertRequestId(Long alertRequestId);
 
 	List<NotificationLog> findByStatus(NotificationStatus status);
 
-	@Query("{ 'alterRequestId: ?0'}")
-	List<NotificationLog> findLastestByAlertRequestId(ObjectId alertRequestId);
+	NotificationLog findTop1ByAlertRequestIdOrderByIdDesc(Long alertRequestId);
 
-	@Query("{ 'status':  'FAIL', 'sentAt':  { $gte:  ?0, $lte: ?1} }")
+	@Query("SELECT nl FROM NotificationLog nl WHERE nl.status = com.whatsub.domain.enums.NotificationStatus.FAIL AND nl.sentAt BETWEEN ?1 AND ?2")
 	List<NotificationLog> findFailedNotificationsBetween(LocalDateTime startTime, LocalDateTime endTime);
 }

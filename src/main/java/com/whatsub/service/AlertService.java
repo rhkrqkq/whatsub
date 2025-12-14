@@ -3,7 +3,6 @@ package com.whatsub.service;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import com.whatsub.domain.entity.AlertRequest;
@@ -25,11 +24,12 @@ public class AlertService {
 	private final StationService stationService;
 	private final TrainTrackingService trainTrackingService;
 
-	public ObjectId createAlert(AlertCreateDTO.AlertCreateRequestDTO requestDTO) {
+	public Long createAlert(AlertCreateDTO.AlertCreateRequestDTO requestDTO) {
 		User user = userService.findorCreateUser(requestDTO.getEmail(), requestDTO.getFcmToken());
-		Station startStation = stationService.getStationById(new ObjectId(requestDTO.getStartStationId()))
+
+		Station startStation = stationService.getStationById(Long.parseLong(requestDTO.getStartStationId()))
 			.orElseThrow(()->new IllegalArgumentException("출발역을 찾을 수 없습니다."));
-		Station endStation = stationService.getStationById(new ObjectId(requestDTO.getEndStationId()))
+		Station endStation = stationService.getStationById(Long.parseLong(requestDTO.getEndStationId()))
 			.orElseThrow(()->new IllegalArgumentException("도착역을 찾을 수 없습니다."));
 
 		AlertRequest alertRequest = new AlertRequest();

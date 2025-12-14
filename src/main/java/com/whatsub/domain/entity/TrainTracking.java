@@ -2,22 +2,26 @@ package com.whatsub.domain.entity;
 
 import java.time.LocalDateTime;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Document(collection = "train_track")
+@Entity
+@Table(name = "train_track")
 @Getter
 @Setter
 @NoArgsConstructor
 public class TrainTracking {
 	@Id
-	private ObjectId id;
-	private ObjectId alertRequestId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private Long alertRequestId;
 
 	private String trainNum;
 	private String currentStation;

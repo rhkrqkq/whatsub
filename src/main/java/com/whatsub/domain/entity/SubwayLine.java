@@ -2,21 +2,25 @@ package com.whatsub.domain.entity;
 
 import java.time.LocalDateTime;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Document(collection = "line")
+@Entity
+@Table(name = "line")
 @Getter
 @Setter
 @NoArgsConstructor
 public class SubwayLine {
 	@Id
-	private ObjectId id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	private String lineName;
 	private String colorCode;
